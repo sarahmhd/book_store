@@ -1,98 +1,56 @@
-let cntSpan = document.querySelector(".cart-icon .count");
+const loader = document.querySelector(".loading");
+const mainDiv = document.querySelector(".main .row");
+const cntSpan = document.querySelector(".cart-icon .count");
+const searchIcon = document.querySelector(".header .search-bar");
+const searchForm = document.querySelector(".header .search-form");
+const cartIcon = document.querySelector(".header .shopping-cart");
+const cartDropdown = document.querySelector(".header .cart-dropdown");
+const menuIcon = document.querySelector(".header .menu-icon");
+const menuXIcon = document.querySelector(".side-menu .x-icon");
+const sideMenu = document.querySelector(".side-menu");
+const overlay = document.querySelector(".overlay");
+const searchInput = searchForm.querySelector("input[type='search']");
 
-let word = encodeURIComponent("software development");
-let URL = `https://www.googleapis.com/books/v1/volumes?q=$software+development`;
-const xhr = new XMLHttpRequest();
-let mainDiv = document.querySelector(".main .row");
 let books = [];
 let shoppingBg = [];
-let cnt = localStorage.getItem("bag")
-  ? JSON.parse(localStorage.getItem("bag")).length
-  : 0;
+let cnt = getCartCount();
+
 cntSpan.innerHTML = cnt;
 
-let loader = document.querySelector(".loading");
-
 showLoader();
+getData("software development");
 
-function getData() {
-  setTimeout(removeLoader, 3000);
+searchIcon.addEventListener("click", toggleSearchForm);
+cartIcon.addEventListener("mouseover", showCartDropdown);
+cartIcon.addEventListener("mouseout", hideCartDropdown);
+menuIcon.addEventListener("click", openSideMenu);
+menuXIcon.addEventListener("click", closeSideMenu);
 
-  let data = JSON.parse(this.responseText);
-  // console.log(data.totalItems);
-  // console.log(data);
-  data.items.forEach((el) => {
-    let price = 150 * Math.ceil(Math.random());
-    let currency = "EGP";
-    if (el.saleInfo.saleability == "FOR_SALE") {
-      price = el.saleInfo.listPrice.amount;
-      currency = el.saleInfo.listPrice.currencyCode;
-    }
-    let book = {
-      id: el.id,
-      title: el.volumeInfo.title,
-      authors: el.volumeInfo.authors.join(","),
-      publishedDate: el.volumeInfo.publishedDate,
-      description: el.volumeInfo.description,
-      industryIdentifiers: el.volumeInfo.industryIdentifiers,
-      readingModes: el.volumeInfo.readingModes,
-      pageCount: el.volumeInfo.pageCount,
-      printType: el.volumeInfo.printType,
-      averageRating: el.volumeInfo.averageRating,
-      categories: el.volumeInfo.categories,
-      contentVersion: el.volumeInfo.contentVersion,
-      imageLink: el.volumeInfo.imageLinks.thumbnail,
-      infoLink: el.volumeInfo.infoLink,
-      language: el.volumeInfo.language,
-      maturityRating: el.volumeInfo.maturityRating,
-      previewLink: el.volumeInfo.previewLink,
-      ratingsCount: el.volumeInfo.ratingsCount,
-      price: price,
-      currency: currency,
-    };
-    books.push(book);
-    // console.log(book.authors);
-  });
-
-  addDataToBody(books);
+function toggleSearchForm() {
+  searchForm.classList.toggle("active");
 }
 
-xhr.addEventListener("load", getData);
-xhr.open("GET", URL);
-xhr.send();
+function showCartDropdown() {
+  cartDropdown.classList.add("active");
+}
 
-function addDataToBody(books) {
-  mainDiv.innerHTML = "";
-  books.forEach((el, idx) => {
-    mainDiv.innerHTML += `
-        <div class="col-12 col-6 col-md-4 col-lg-3">
-            <div class="card mb-4">
-              <div class="card-img">
-                  <div class="card-overlay">
-                    <button class="view-details">
-                      view details
-                    </button>
-                  </div>
-                  <img src="${el.imageLink}" alt="" />
-              </div>
-              <div class="card-body">
-                  <span class="author">${el.authors}</span>
-                  <h5 class="card-title">${el.title}</h5>
-                  <span class="price">£${el.price}</span>
-              </div>
-              <div class="add-icon" onclick="addToBag(books[${idx}])">
-                <i class="fa-solid fa-cart-shopping"></i>
-              </div>
-          </div>
-        </div>
-        `;
-    let viewDetailsBtns = document.querySelectorAll(".view-details");
-    viewDetailsBtns.forEach((viewDetailsBtn, idx) => {
-      viewDetailsBtn.addEventListener("click", () => {
-        viewDetails(books[idx]);
-      });
-    });
-  });
+function hideCartDropdown() {
+  cartDropdown.classList.remove("active");
+}
+
+function openSideMenu() {
+  sideMenu.classList.add("active");
+  overlay.classList.add("active");
+}
+
+function closeSideMenu() {
+  sideMenu.classList.remove("active");
+  overlay.classList.remove("active");
+}
+
+function getCartCount() {
+  const storedItems = JSON.parse(localStorage.getItem("bag")) || [];
+  return storedItems.length;
 }
 
 function showLoader() {
@@ -103,70 +61,130 @@ function removeLoader() {
   loader.classList.remove("active");
 }
 
+function getData(query) {
+  const word = encodeURIComponent(query);
+  const URL = `https://www.googleapis.com/books/v1/volumes?q=${word}`;
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", processResponse);
+  xhr.open("GET", URL);
+  xhr.send();
+}
+
+function processResponse() {
+  removeLoader();
+  const data = JSON.parse(this.responseText);
+  const { items } = data;
+  books = items.map(extractBookData);
+  addDataToBody(books);
+  console.log(books);
+}
+
+function extractBookData(el) {
+  const price =
+    el.saleInfo.saleability === "FOR_SALE"
+      ? el.saleInfo.listPrice.amount
+      : 150 * Math.ceil(Math.random());
+  const currency =
+    el.saleInfo.saleability === "FOR_SALE"
+      ? el.saleInfo.listPrice.currencyCode
+      : "EGP";
+  return {
+    id: el.id,
+    title: el.volumeInfo.title,
+    authors: el.volumeInfo.authors.join(","),
+    publishedDate: el.volumeInfo.publishedDate,
+    description: el.volumeInfo.description,
+    industryIdentifiers: el.volumeInfo.industryIdentifiers,
+    readingModes: el.volumeInfo.readingModes,
+    pageCount: el.volumeInfo.pageCount,
+    printType: el.volumeInfo.printType,
+    averageRating: el.volumeInfo.averageRating,
+    categories: el.volumeInfo.categories,
+    contentVersion: el.volumeInfo.contentVersion,
+    imageLink: el.volumeInfo.imageLinks.thumbnail,
+    infoLink: el.volumeInfo.infoLink,
+    language: el.volumeInfo.language,
+    maturityRating: el.volumeInfo.maturityRating,
+    previewLink: el.volumeInfo.previewLink,
+    ratingsCount: el.volumeInfo.ratingsCount,
+    price: price,
+    currency: currency,
+    cnt: 1,
+  };
+}
+
+function addDataToBody(books) {
+  mainDiv.innerHTML = "";
+  books.forEach((el, idx) => {
+    const card = createCardElement(el, idx);
+    mainDiv.appendChild(card);
+  });
+}
+
+function createCardElement(book, idx) {
+  const card = document.createElement("div");
+  card.classList.add("col-12", "col-6", "col-md-4", "col-lg-3");
+  card.innerHTML = `
+    <div class="card mb-4">
+      <div class="card-img">
+          <div class="card-overlay">
+            <button class="view-details">
+              view details
+            </button>
+          </div>
+          <img src="${book.imageLink}" alt="" />
+      </div>
+      <div class="card-body">
+          <span class="author">${book.authors}</span>
+          <h5 class="card-title">${book.title}</h5>
+          <span class="price">£${book.price}</span>
+      </div>
+      <div class="add-icon" onclick="addToBag(${idx})">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+    </div>
+  `;
+  card.querySelector(".view-details").addEventListener("click", () => {
+    viewDetails(book);
+  });
+  return card;
+}
+
 function viewDetails(book) {
   localStorage.setItem("book", JSON.stringify(book));
   window.location.href = "details.html";
-  console.log(book);
+  // console.log(book);
 }
 
-function addToBag(item) {
-  item.cnt = 1;
-
-  let exist = shoppingBg.find((el) => el.id == item.id);
+function addToBag(idx) {
+  const item = books[idx];
+  const exist = shoppingBg.find((el) => el.id === item.id);
   if (exist) {
-    shoppingBg.map((bagItem) =>
-      bagItem.id == item.id ? bagItem.cnt++ : bagItem.cnt
-    );
+    shoppingBg.forEach((bagItem) => {
+      if (bagItem.id === item.id) {
+        bagItem.cnt++;
+      }
+    });
   } else {
     shoppingBg.push(item);
-    updateCount();
+    updateCartCount();
   }
-  // shoppingBg.push(item);
-  addToLocal(shoppingBg);
+  addToLocalStorage(shoppingBg);
 }
 
-function addToLocal(shoppingBg) {
+function addToLocalStorage(shoppingBg) {
   localStorage.setItem("bag", JSON.stringify(shoppingBg));
 }
 
-function updateCount() {
+function updateCartCount() {
   cnt++;
   cntSpan.innerHTML = cnt;
 }
 
-// ============= SHOW SEARCH FORM ============= //
-let searchIcon = document.querySelector(".header .search-bar");
-let searchForm = document.querySelector(".header .search-form");
-
-searchIcon.addEventListener("click", () => {
-  searchForm.classList.toggle("active");
-});
-// ============= SHOW AND HIDE DROPDOWN CART ============= //
-let cartIcon = document.querySelector(".header .shopping-cart");
-let cartDropdown = document.querySelector(".header .cart-dropdown");
-
-cartIcon.addEventListener("mouseover", showDropdown);
-cartIcon.addEventListener("mouseout", hideDropdown);
-
-function showDropdown() {
-  cartDropdown.classList.add("active");
-}
-
-function hideDropdown() {
-  cartDropdown.classList.remove("active");
-}
-// ============= SHOW AND HIDE SIDE MENU ============= //
-let menuIcon = document.querySelector(".header .menu-icon");
-let menuXIcon = document.querySelector(".side-menu .x-icon");
-let sideMenu = document.querySelector(".side-menu");
-let overlay = document.querySelector(".overlay");
-
-menuIcon.addEventListener("click", () => {
-  sideMenu.classList.add("active");
-  overlay.classList.add("active");
-});
-
-menuXIcon.addEventListener("click", () => {
-  sideMenu.classList.remove("active");
-  overlay.classList.remove("active");
+searchInput.addEventListener("input", () => {
+  if (searchInput.value.trim() != "") {
+    getData(searchInput.value);
+  } else {
+    console.error("Enter Valid Data to Search for ...");
+  }
 });
