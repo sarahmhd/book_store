@@ -148,10 +148,10 @@ input
                             top: 0
                             right: -8px
                             background: $orange-color
-                            width: 15px
-                            height: 15px
+                            width: 17px
+                            height: 17px
                             border-radius: 50%
-                            font-size: 12px
+                            font-size: 11px
                             text-align: center
                             z-index: 222
                             line-height: 15px
@@ -354,7 +354,9 @@ input
                         letter-spacing: 2px
                         transition: 0.5s
                         opacity: 0
-                        a
+                        button
+                            border: 0
+                            background: transparent
                             text-transform: capitalize
                             color: $white-color
                             position: relative
@@ -379,31 +381,59 @@ input
                     display: flex
                     flex-direction: column
                     justify-content: space-between
-                    .author
-                        opacity: 0.4
-                        text-transform: capitalize
-                        letter-spacing: 2px
-                        font-style: italic
-                        font-size: 13px
-                        margin-bottom: 12px
-                        display: block
-                    .card-title
-                        // margin-bottom: 12px
-                        font-size: 17px
-                        line-height: 1.5
-                        text-transform: capitalize
-                    .price
-                        opacity: 0.5
                 .add-icon
                     position: absolute
                     bottom: 10px
                     right: 15px
                     color: $orange-color
                     cursor: pointer
+            .author
+                opacity: 0.4
+                text-transform: capitalize
+                letter-spacing: 2px
+                font-style: italic
+                font-size: 13px
+                margin-bottom: 12px
+                display: block
+            .card-title
+                // margin-bottom: 12px
+                font-size: 17px
+                line-height: 1.5
+                text-transform: capitalize
+            .price
+                opacity: 0.5
 .footer
     background: $main-color
     color: $white-color
     p
         font-size: 15px
         letter-spacing: 2px
+
+// =================== DETAILS PAGE =================== //
+.main
+    .row
+        .info
+            display: flex
+            flex-direction: column
+            gap: 12px
+            .author
+                font-size: 15px
+            .title
+                text-transform: capitalize
+                font-size: 2rem
+            .desc
+                opacity: 0.7
+                font-size: 15px
+                line-height: 1.7
+            p
+                &:not(.desc)
+                    font-weight: bold
+                    font-size: 15px
+                    span
+                        font-weight: 100
+                        font-size: 14px
+                        opacity: 0.5
+                        padding: 0 10px
+                        font-style: italic
+
 @import 'media'

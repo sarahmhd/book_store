@@ -1,18 +1,26 @@
-let URL = "https://www.googleapis.com/books/v1/volumes?q=software+development";
+let cntSpan = document.querySelector(".cart-icon .count");
+
+let word = encodeURIComponent("software development");
+let URL = `https://www.googleapis.com/books/v1/volumes?q=$software+development`;
 const xhr = new XMLHttpRequest();
 let mainDiv = document.querySelector(".main .row");
 let books = [];
+let shoppingBg = [];
+let cnt = localStorage.getItem("bag")
+  ? JSON.parse(localStorage.getItem("bag")).length
+  : 0;
+cntSpan.innerHTML = cnt;
 
 let loader = document.querySelector(".loading");
 
-// showLoader();
+showLoader();
 
 function getData() {
   setTimeout(removeLoader, 3000);
 
   let data = JSON.parse(this.responseText);
-  console.log(data.totalItems);
-  console.log(data);
+  // console.log(data.totalItems);
+  // console.log(data);
   data.items.forEach((el) => {
     let price = 150 * Math.ceil(Math.random());
     let currency = "EGP";
@@ -43,7 +51,7 @@ function getData() {
       currency: currency,
     };
     books.push(book);
-    console.log(book.authors);
+    // console.log(book.authors);
   });
 
   addDataToBody(books);
@@ -55,15 +63,15 @@ xhr.send();
 
 function addDataToBody(books) {
   mainDiv.innerHTML = "";
-  books.forEach((el) => {
+  books.forEach((el, idx) => {
     mainDiv.innerHTML += `
         <div class="col-12 col-6 col-md-4 col-lg-3">
             <div class="card mb-4">
               <div class="card-img">
                   <div class="card-overlay">
-                    <a href="details.html">
+                    <button class="view-details">
                       view details
-                    </a>
+                    </button>
                   </div>
                   <img src="${el.imageLink}" alt="" />
               </div>
@@ -72,19 +80,20 @@ function addDataToBody(books) {
                   <h5 class="card-title">${el.title}</h5>
                   <span class="price">£${el.price}</span>
               </div>
-              <div class="add-icon">
+              <div class="add-icon" onclick="addToBag(books[${idx}])">
                 <i class="fa-solid fa-cart-shopping"></i>
               </div>
           </div>
         </div>
         `;
+    let viewDetailsBtns = document.querySelectorAll(".view-details");
+    viewDetailsBtns.forEach((viewDetailsBtn, idx) => {
+      viewDetailsBtn.addEventListener("click", () => {
+        viewDetails(books[idx]);
+      });
+    });
   });
 }
-// window.onload = () => {
-//   setTimeout(() => {
-//     loader.classList.remove("active");
-//   }, 3000);
-// };
 
 function showLoader() {
   loader.classList.add("active");
@@ -92,6 +101,37 @@ function showLoader() {
 
 function removeLoader() {
   loader.classList.remove("active");
+}
+
+function viewDetails(book) {
+  localStorage.setItem("book", JSON.stringify(book));
+  window.location.href = "details.html";
+  console.log(book);
+}
+
+function addToBag(item) {
+  item.cnt = 1;
+
+  let exist = shoppingBg.find((el) => el.id == item.id);
+  if (exist) {
+    shoppingBg.map((bagItem) =>
+      bagItem.id == item.id ? bagItem.cnt++ : bagItem.cnt
+    );
+  } else {
+    shoppingBg.push(item);
+    updateCount();
+  }
+  // shoppingBg.push(item);
+  addToLocal(shoppingBg);
+}
+
+function addToLocal(shoppingBg) {
+  localStorage.setItem("bag", JSON.stringify(shoppingBg));
+}
+
+function updateCount() {
+  cnt++;
+  cntSpan.innerHTML = cnt;
 }
 
 // ============= SHOW SEARCH FORM ============= //

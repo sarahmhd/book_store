@@ -173,10 +173,10 @@ input:focus {
   top: 0;
   right: -8px;
   background: #CC362C;
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
   z-index: 222;
   line-height: 15px;
@@ -421,13 +421,15 @@ input:focus {
   transition: 0.5s;
   opacity: 0;
 }
-.main .main-content .row .card .card-img .card-overlay a {
+.main .main-content .row .card .card-img .card-overlay button {
+  border: 0;
+  background: transparent;
   text-transform: capitalize;
   color: #fff;
   position: relative;
   padding: 10px 0;
 }
-.main .main-content .row .card .card-img .card-overlay a::after {
+.main .main-content .row .card .card-img .card-overlay button::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -437,7 +439,7 @@ input:focus {
   background: #fff;
   transition: 0.5s;
 }
-.main .main-content .row .card .card-img .card-overlay a:hover::after {
+.main .main-content .row .card .card-img .card-overlay button:hover::after {
   width: 100%;
 }
 .main .main-content .row .card .card-img:hover .card-overlay {
@@ -449,7 +451,14 @@ input:focus {
   flex-direction: column;
   justify-content: space-between;
 }
-.main .main-content .row .card .card-body .author {
+.main .main-content .row .card .add-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  color: #CC362C;
+  cursor: pointer;
+}
+.main .main-content .row .author {
   opacity: 0.4;
   text-transform: capitalize;
   letter-spacing: 2px;
@@ -458,20 +467,13 @@ input:focus {
   margin-bottom: 12px;
   display: block;
 }
-.main .main-content .row .card .card-body .card-title {
+.main .main-content .row .card-title {
   font-size: 17px;
   line-height: 1.5;
   text-transform: capitalize;
 }
-.main .main-content .row .card .card-body .price {
+.main .main-content .row .price {
   opacity: 0.5;
-}
-.main .main-content .row .card .add-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 15px;
-  color: #CC362C;
-  cursor: pointer;
 }
 
 .footer {
@@ -481,6 +483,35 @@ input:focus {
 .footer p {
   font-size: 15px;
   letter-spacing: 2px;
+}
+
+.main .row .info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.main .row .info .author {
+  font-size: 15px;
+}
+.main .row .info .title {
+  text-transform: capitalize;
+  font-size: 2rem;
+}
+.main .row .info .desc {
+  opacity: 0.7;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.main .row .info p:not(.desc) {
+  font-weight: bold;
+  font-size: 15px;
+}
+.main .row .info p:not(.desc) span {
+  font-weight: 100;
+  font-size: 14px;
+  opacity: 0.5;
+  padding: 0 10px;
+  font-style: italic;
 }
 
 /* For large devices */
