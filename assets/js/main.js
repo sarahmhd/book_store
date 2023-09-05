@@ -57,7 +57,7 @@ function addDataToBody(books) {
   mainDiv.innerHTML = "";
   books.forEach((el) => {
     mainDiv.innerHTML += `
-        <div class="col col-md-4 col-lg-3">
+        <div class="col-12 col-6 col-md-4 col-lg-3">
             <div class="card mb-4">
               <div class="card-img">
                   <div class="card-overlay">
@@ -71,6 +71,9 @@ function addDataToBody(books) {
                   <span class="author">${el.authors}</span>
                   <h5 class="card-title">${el.title}</h5>
                   <span class="price">£${el.price}</span>
+              </div>
+              <div class="add-icon">
+                <i class="fa-solid fa-cart-shopping"></i>
               </div>
           </div>
         </div>
