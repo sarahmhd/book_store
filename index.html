@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Project one javascript for ITI :D" />
+    <!--=============== BootsTrap ===============-->
+    <link rel="shortcut icon" href="assets/imgs/book.png" type="image/x-icon" />
+    <link rel="stylesheet" href="assets/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Books Store</title>
+  </head>
+  <body>
+    <!-- <div class="loading active">
+      <div class="img">
+        <img src="assets/imgs/loadingLogo-removebg-preview.png" alt="" />
+      </div>
+      <div class="loading-area">
+        <div class="loader">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="overlay"></div>
+    <!--================ TOP SECTION WITH SOCIAL =================-->
+    <div class="fixed-bar py-3">
+      <div class="container">
+        <ul
+          class="list-unstyled m-0 social d-flex align-items-center justify-content-center"
+        >
+          <li>
+            <a href="#">
+              <i class="fa-brands fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-solid fa-basketball"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!--================ HEADER =================-->
+    <div class="header">
+      <div class="container">
+        <div class="header-content d-flex justify-content-between">
+          <div class="left d-flex align-items-center">
+            <a href="#" class="logo">
+              <img src="assets/imgs/book.png" alt="" />
+            </a>
+            <ul class="nav">
+              <li>
+                <a href="#"> Home </a>
+              </li>
+            </ul>
+          </div>
+          <div class="right d-flex align-items-center">
+            <div class="shopping-cart">
+              <a href="cart.html" class="cart-holder d-flex align-items-center">
+                <div class="cart-icon">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                  <!-- <i class="fa-solid fa-cart-shopping"></i> -->
+                  <span class="count">0</span>
+                </div>
+                <div class="total">£20.5</div>
+              </a>
+              <div class="cart-dropdown">
+                <div class="items d-flex flex-column">
+                  <div class="item d-flex">
+                    <div class="item-img">
+                      <img src="assets/imgs/book.png" alt="" />
+                    </div>
+                    <div class="item-info flex-column">
+                      <h5 class="item-title">front-end</h5>
+                      <span class="price">£20.5</span>
+                      <div class="x-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item d-flex">
+                    <div class="item-img">
+                      <img src="assets/imgs/book.png" alt="" />
+                    </div>
+                    <div class="item-info d-flex flex-column">
+                      <h5 class="item-title">front-end</h5>
+                      <span class="price">£20.5</span>
+                      <div class="x-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="total d-flex justify-content-between">
+                  <h5>total:</h5>
+                  <span class="total-amount">£20.5</span>
+                </div>
+                <div class="btns d-flex flex-column">
+                  <a href="cart.html" class="btn cart-btn">view cart</a>
+                  <a href="checkout.html" class="btn checkout-btn"
+                    >view checkout</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="search-bar">
+              <div class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+            </div>
+            <div class="side-menu-bar">
+              <a href="#" class="menu-icon">
+                <i class="fa-solid fa-bars"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="search-form d-flex">
+          <input type="search" placeholder="Search..." />
+          <input type="submit" value="Go" />
+        </div>
+      </div>
+    </div>
+    <!--================ MAIN =================-->
+    <div class="main py-5">
+      <div class="container">
+        <div class="main-content">
+          <div class="row">
+            <!-- <div class="col-sm-2 col-md-4 col-lg-3">
+              <div class="card">
+                <div class="card-img">
+                  <div class="card-overlay">
+                    <a href="details.html"> view details </a>
+                  </div>
+                  <img src="${el.imageLink}" alt="" />
+                </div>
+                <div class="card-body">
+                  <span class="author">${el.authors}</span>
+                  <h5 class="card-title">${el.title}</h5>
+                  <span class="price">£${el.price}</span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--================ SIDE MENU =================-->
+    <div class="side-menu d-flex flex-column">
+      <a href="#" class="logo">
+        <img src="assets/imgs/book.png" alt="" />
+      </a>
+      <ul class="contact list-unstyled">
+        <li class="d-flex">
+          <div class="icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <p>1942 Amsterdam Ave NY</p>
+        </li>
+        <li class="d-flex">
+          <div class="icon">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <p>(212) 862-3680</p>
+        </li>
+        <li class="d-flex">
+          <div class="icon">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <p>chapter@example.com</p>
+        </li>
+      </ul>
+      <div class="form-subscribe">
+        <input type="email" placeholder="Email..." />
+        <button>Subscribe</button>
+      </div>
+      <ul
+        class="list-unstyled m-0 social d-flex align-items-center justify-content-center"
+      >
+        <li>
+          <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa-solid fa-basketball"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="x-icon position-absolute">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+    </div>
+    <!--================ FOOTER =================-->
+    <div class="footer py-3 d-flex justify-content-center align-items-center">
+      <p class="m-0">Copyright &copy; 2023. All rights reserved.</p>
+    </div>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/all.min.js"></script>
+  </body>
+</html>
