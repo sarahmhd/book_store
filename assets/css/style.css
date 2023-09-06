@@ -485,6 +485,84 @@ input:focus {
   letter-spacing: 2px;
 }
 
+.main,
+.shopping-main {
+  min-height: 80vh;
+}
+
+.shopping-main .row .col-content {
+  overflow-x: scroll;
+}
+.shopping-main .row table {
+  min-width: 700px;
+}
+.shopping-main .row table th, .shopping-main .row table td {
+  padding: 15px;
+  text-align: center;
+}
+.shopping-main .row table thead tr th {
+  background: #282828;
+  color: #fff;
+  text-transform: capitalize;
+}
+.shopping-main .row table tbody tr td {
+  vertical-align: middle;
+}
+.shopping-main .row table tbody tr td .icon-x {
+  cursor: pointer;
+}
+.shopping-main .row table tbody tr td .icon-x:hover {
+  color: #be2323;
+}
+.shopping-main .row table tbody tr td .img {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+.shopping-main .row table tbody tr td .img img {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.shopping-main .row table tbody tr td .counter {
+  gap: 10px;
+}
+.shopping-main .row table tbody tr td .counter .btn {
+  background: #CC362C;
+  color: #fff;
+}
+.shopping-main .row table tbody tr td .counter .btn:focus {
+  box-shadow: none !important;
+}
+.shopping-main .row table tbody tr td .counter .btn,
+.shopping-main .row table tbody tr td .counter input {
+  font-size: 1.1rem;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+.shopping-main .row table tbody tr td .counter input[type=number] {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #282828;
+}
+.shopping-main .row .total {
+  gap: 20px;
+}
+.shopping-main .row .total .info {
+  background: #CC362C;
+  color: #fff;
+}
+.shopping-main .row .total .info,
+.shopping-main .row .total .checkout {
+  padding: 15px;
+}
+.shopping-main .row .total .checkout {
+  background: #282828;
+  color: #fff;
+  text-transform: capitalize;
+}
+
 .main .row .info {
   display: flex;
   flex-direction: column;

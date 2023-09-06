@@ -5,15 +5,24 @@ const searchIcon = document.querySelector(".header .search-bar");
 const searchForm = document.querySelector(".header .search-form");
 const cartIcon = document.querySelector(".header .shopping-cart");
 const cartDropdown = document.querySelector(".header .cart-dropdown");
+const cartDropdownBody = document.querySelector(
+  ".header .cart-dropdown .items"
+);
+const cartDropdownTotal = document.querySelector(
+  ".header .cart-dropdown .total-amount"
+);
+const totalSpan = document.querySelector(".cart-holder .total");
 const menuIcon = document.querySelector(".header .menu-icon");
 const menuXIcon = document.querySelector(".side-menu .x-icon");
 const sideMenu = document.querySelector(".side-menu");
 const overlay = document.querySelector(".overlay");
 const searchInput = searchForm.querySelector("input[type='search']");
+const searchSubmit = searchForm.querySelector("input[type='submit']");
 
 let books = [];
-let shoppingBg = [];
+let shoppingBg = getShoppingData();
 let cnt = getCartCount();
+let total = countTotal();
 
 cntSpan.innerHTML = cnt;
 
@@ -25,6 +34,12 @@ cartIcon.addEventListener("mouseover", showCartDropdown);
 cartIcon.addEventListener("mouseout", hideCartDropdown);
 menuIcon.addEventListener("click", openSideMenu);
 menuXIcon.addEventListener("click", closeSideMenu);
+searchSubmit.addEventListener("click", searchBook);
+searchInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    searchBook();
+  }
+});
 
 function toggleSearchForm() {
   searchForm.classList.toggle("active");
@@ -53,6 +68,11 @@ function getCartCount() {
   return storedItems.length;
 }
 
+function getShoppingData() {
+  const shoppingItems = JSON.parse(localStorage.getItem("bag")) || [];
+  return shoppingItems;
+}
+
 function showLoader() {
   loader.classList.add("active");
 }
@@ -76,7 +96,7 @@ function processResponse() {
   const { items } = data;
   books = items.map(extractBookData);
   addDataToBody(books);
-  console.log(books);
+  // console.log(books);
 }
 
 function extractBookData(el) {
@@ -170,6 +190,7 @@ function addToBag(idx) {
     updateCartCount();
   }
   addToLocalStorage(shoppingBg);
+  addToDropdown(shoppingBg);
 }
 
 function addToLocalStorage(shoppingBg) {
@@ -177,14 +198,67 @@ function addToLocalStorage(shoppingBg) {
 }
 
 function updateCartCount() {
-  cnt++;
-  cntSpan.innerHTML = cnt;
+  // cnt++;
+  cntSpan.innerHTML = shoppingBg.length;
 }
 
-searchInput.addEventListener("input", () => {
+// searchInput.addEventListener("input", () => {
+//   if (searchInput.value.trim() != "") {
+//     getData(searchInput.value);
+//   } else {
+//     console.error("Enter Valid Data to Search for ...");
+//   }
+// });
+
+function searchBook() {
   if (searchInput.value.trim() != "") {
     getData(searchInput.value);
   } else {
     console.error("Enter Valid Data to Search for ...");
   }
-});
+  searchInput.value = "";
+}
+
+function addToDropdown(shoppingBg) {
+  cartDropdownBody.innerHTML = "";
+  shoppingBg.forEach((item, idx) => {
+    cartDropdownBody.innerHTML += `
+       <div class="item d-flex">
+          <div class="item-img">
+            <img src="${item.imageLink}" alt="" />
+          </div>
+          <div class="item-info flex-column">
+            <h5 class="item-title">${item.title}</h5>
+            <span class="price">£${item.price}</span>
+            <div class="x-icon" onclick="removeFromBg(${idx});countTotal()">
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+        </div>
+    `;
+    countTotal();
+  });
+}
+
+function removeFromBg(idx) {
+  shoppingBg = shoppingBg.filter((el) => el.id !== shoppingBg[idx].id);
+  addToLocalStorage(shoppingBg);
+  addToDropdown(shoppingBg);
+  updateCartCount(shoppingBg);
+}
+
+addToDropdown(shoppingBg);
+
+function countTotal() {
+  let total = 0;
+  if (shoppingBg.length > 0) {
+    shoppingBg.forEach((el) => {
+      total += parseFloat(el.price) * el.cnt;
+    });
+  } else {
+    total = `0`;
+  }
+  totalSpan.innerHTML = `£${total}`;
+  cartDropdownTotal.innerHTML = `£${total}`;
+  return parseFloat(total).toFixed(2);
+}
